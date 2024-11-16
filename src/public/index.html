@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riky Ripaldo</title>
+</head>
+
+<body>
+    <h1>Awan Settings</h1>
+    <section>
+        <h2>Signin</h2>
+        <input type="text" id="email" placeholder="Email">
+        <input type="text" id="sandi" placeholder="Password">
+        <button onclick="Signin()" type="submit">Signin</button>
+        <div>
+            <p id="infsignin"></p>
+        </div>
+    </section>
+    <section>
+        <div id="post"></div>
+    </section>
+    <script type="text/javascript">
+        const infsignin = document.getElementById('infsignin');
+
+        async function Signin() {
+            const email = document.getElementById('email').value;
+            const sandi = document.getElementById('sandi').value;
+
+            const login = await fetch('http://localhost:2024/api/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    sandi: sandi
+                })
+            })
+            const res = await login.json()
+            infsignin.innerHTML = JSON.stringify(res)
+        }
+
+        const post = document.getElementById("post")
+        async function readPost() {
+            const response = await fetch("http://localhost:2024/api/read", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const res = await response.json()
+            for (let i=0; i<res.data?.rikyxdz?.nama.length;i++) {
+                post.innerHTML = `
+                  <p>${res.data?.rikyxdz?.nama}</p>
+                  <p>${res?.data?.rikyxdz?.konten?.judul}\n${res?.data?.rikyxdz?.konten?.isi}\n${res?.data?.rikyxdz?.konten?.tanggal}</p>
+                `
+            }
+        }
+        readPost()
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "malas",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "author": {
+    "name": "Riky Ripaldo",
+    "email": "rikyripaldo@icloud.com",
+    "github": "https://github.com/Kynonim",
+    "license": "MIT"
+  },
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "bun --watch run index.ts",
+    "vercel-build": "bun --help"
+  },
+  "directories": {
+    "lib": "src"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
