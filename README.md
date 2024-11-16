@@ -20,7 +20,7 @@ bun run start
 * .env
 
 ```bash
-PORT = 1000
+PORT = 2024
 HOSTNAME = "localhost"
 AUTHORIZATION = "AkuMalasNgoding"
 SECRET_KEY = "MendingScrollFacebook"
