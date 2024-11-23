@@ -50,6 +50,7 @@ export async function SigninAkun(akun: any) : Promise<{ status: boolean; message
     if (!user) {
         return { status: false, message: "Email atau Sandi salah" }
     } else {
+        console.log(`Email: ${email} login pada ${new Date().toLocaleString()}`)
         return { status: true, message: "Berhasil login" }
     }
 }
@@ -78,6 +79,7 @@ export async function SignupAkun(akun: any): Promise<{ status: boolean; message:
     } else {
         data.push(akun)
         await SimpanDataKeDatabase(data)
+        console.log(`Email: ${email} Register pada ${new Date().toLocaleString()}`)
         return { "status": true, "message": "Akun berhasil dibuat" }
     }
 }
@@ -130,6 +132,7 @@ export async function UbahDataPengguna(data: any): Promise<{ status: boolean; me
             user.email = data.email
             user.sandi = data.sandi
             await SimpanDataKeDatabase(database)
+            console.log(`Email: ${data.email} ubah data pada ${new Date().toLocaleString()}`)
             return { status: true, message: "Berhasil membaca postingan", data: user }
         }
     }

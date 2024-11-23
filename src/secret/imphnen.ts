@@ -1,42 +1,58 @@
-import { randomBytes } from "crypto"
+import { randomBytes, verify } from "crypto"
 import { writeFileSync, readFileSync, existsSync } from "fs"
 
-const unicodeId = randomBytes(16).toString("hex")
 const databasePath = process.env.POSTINGAN_PATH ?? ""
 
 /**
  * buat atau perbarui postingan
  * @param data 
+ * @returns boolean
  */
 
-const updateDatabase = async (data: any): Promise<boolean> => {
-    let database = await BacaDataDariDatabase() ?? []
-    database = Array.isArray(database) ? database : [database]
-    const user = database.findIndex((user: any) => user?.rikyxdz?.email === data.email)
-    if (user === -1) {
-        const update = {
-            nama: data.nama,
-            email: data.email,
+const updateDatabase = async (data: any) => {
+    let database = await BacaDataDariDatabase() ?? {}
+    const unicode = randomBytes(16).toString("hex")
+    
+    database = typeof database === "object" && !Array.isArray(database) ? database : {}
+    const user = Object.keys(database).find((key) => database[key].email === data?.email)
+    console.log(JSON.stringify(user))   
+
+    if (!user) {
+        const kunci = data?.kunci ?? randomBytes(8).toString("hex")
+        database[kunci] = {
+            nama: data?.nama,
+            email: data?.email,
+            profil: data?.profil,
+            verify: data?.verify,
+            kunci: kunci,
             konten: {
-                [unicodeId]: {
+                [unicode]: {
                     judul: data?.konten?.judul,
                     isi: data?.konten?.isi,
-                    tanggal: new Date().toLocaleDateString()
+                    media: data?.konten?.media,
+                    key: unicode,
+                    tanggal: {
+                        hari: new Date().toLocaleDateString(),
+                        waktu: new Date().toLocaleTimeString()
+                    }
                 }
             }
         }
-        database?.rikyxdz?.push(update)
-        writeFileSync(databasePath, JSON.stringify(database))
-        return true
+       console.log(`Email: ${data?.email} membuat postingan pada ${new Date().toLocaleString()}`)
     } else {
-        database[user].rikyxdz.konten[unicodeId] = {
+        database[user].konten[unicode] = {
             judul: data?.konten?.judul,
             isi: data?.konten?.isi,
-            tanggal: new Date().toLocaleDateString()
+            media: data?.konten?.media,
+            key: unicode,
+            tanggal: {
+                hari: new Date().toLocaleDateString(),
+                waktu: new Date().toLocaleTimeString()
+            }
         }
-        writeFileSync(databasePath, JSON.stringify(database))
-        return true
+        console.log(`Email: ${data?.email} Menambah postingan pada ${new Date().toLocaleString()}`)
     }
+    writeFileSync(databasePath, JSON.stringify(database))
 }
 
 /**
@@ -48,14 +64,9 @@ async function BacaDataDariDatabase() {
     if (!existsSync(databasePath)) {
         const dbs = {
             Author: "Riky Ripaldo",
-            Dibuat: new Date().toLocaleDateString(),
-            rikyxdz: {
-                nama: "Riky Ripaldo",
-                email: "rikyripaldo@gmail.com",
-                konten: {}
-            }
+            Dibuat: new Date().toLocaleString()
         } as Object
-        await writeFileSync(databasePath, JSON.stringify(dbs))
+        writeFileSync(databasePath, JSON.stringify(dbs))
         return null
     } else {
         const database = readFileSync(databasePath, "utf8")
@@ -70,17 +81,11 @@ async function BacaDataDariDatabase() {
  */
 
 export async function BuatPostingan(data: any): Promise<{ status: boolean; message: string }> {
-    if (!data.email || !data.konten) {
+    if (!data?.email || !data?.konten) {
         return { status: false, message: "Data tidak lengkap" }
     } else {
-        await updateDatabase(data).then(async (result) => {
-            if (!result) {
-                return { status: false, message: "Email tidak ditemukan" }
-            } else {
-                return { status: true, message: "Berhasil membuat postingan" }
-            }
-        })
-        return { status: false, message: "Posrtingan loading" }
+        await updateDatabase(data)
+        return { status: true, message: "Berhasil membuat postingan" }
     }
 }
 

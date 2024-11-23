@@ -4,61 +4,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Riky Ripaldo</title>
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-container {
+            display: none;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            min-height: 100px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .auth-links {
+            text-align: center;
+        }
+
+        .auth-links a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        #loadingSpinner {
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .post-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+        }
+
+        .post-item h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .post-item .content {
+            font-size: 14px;
+            color: #555;
+        }
+
+        #newPostForm {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Awan Settings</h1>
-    <section>
-        <h2>Signin</h2>
-        <input type="text" id="email" placeholder="Email">
-        <input type="text" id="sandi" placeholder="Password">
-        <button onclick="Signin()" type="submit">Signin</button>
-        <div>
-            <p id="infsignin"></p>
-        </div>
-    </section>
-    <section>
-        <div id="post"></div>
-    </section>
-    <script type="text/javascript">
-        const infsignin = document.getElementById('infsignin');
+    <h1>Riky Ripaldo</h1>
+    <div class="container">
+        <!-- Signin Page -->
+        <section id="signinPage" class="page-container active">
+            <h2>Signin</h2>
+            <input type="email" id="emailSignin" placeholder="Email" />
+            <input type="password" id="passwordSignin" placeholder="Password" />
+            <button onclick="signin()">Signin</button>
+            <div class="auth-links">
+                <p>Belum punya akun? <a href="javascript:void(0)" onclick="showSignup()">Daftar Sekarang</a></p>
+            </div>
+            <p id="signinError" style="color: red;"></p>
+        </section>
 
-        async function Signin() {
-            const email = document.getElementById('email').value;
-            const sandi = document.getElementById('sandi').value;
+        <!-- Signup Page -->
+        <section id="signupPage" class="page-container">
+            <h2>Signup</h2>
+            <input type="text" id="nameSignup" placeholder="Nama" />
+            <input type="email" id="emailSignup" placeholder="Email" />
+            <input type="password" id="passwordSignup" placeholder="Password" />
+            <button onclick="signup()">Daftar</button>
+            <div class="auth-links">
+                <p>Sudah punya akun? <a href="javascript:void(0)" onclick="showSignin()">Masuk</a></p>
+            </div>
+            <p id="signupError" style="color: red;"></p>
+        </section>
 
-            const login = await fetch('http://localhost:2024/api/signin', {
+        <!-- Main Feed Page -->
+        <section id="feedPage" class="page-container">
+            <h2>Post Feed</h2>
+            <div id="loadingSpinner">Loading...</div>
+            <div id="postContainer"></div>
+
+            <!-- New Post Form -->
+            <section id="newPostForm">
+                <h3>Create a New Post</h3>
+                <input type="text" id="newPostTitle" placeholder="Title" />
+                <textarea id="newPostContent" placeholder="What’s on your mind?"></textarea>
+                <button onclick="createPost()">Post</button>
+            </section>
+        </section>
+    </div>
+
+    <script>
+        const signinPage = document.getElementById("signinPage");
+        const signupPage = document.getElementById("signupPage");
+        const feedPage = document.getElementById("feedPage");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+
+        function showSignin() {
+            signinPage.classList.add("active");
+            signupPage.classList.remove("active");
+        }
+
+        function showSignup() {
+            signupPage.classList.add("active");
+            signinPage.classList.remove("active");
+        }
+
+        // Signin Function with localStorage for login persistence
+        async function signin() {
+            const email = document.getElementById('emailSignin').value;
+            const sandi = document.getElementById('passwordSignin').value;
+
+            if (!email || !sandi) {
+                document.getElementById("signinError").innerText = "Email dan Password wajib diisi!";
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:2024/api/signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, sandi })
+                });
+                const data = await response.json();
+                if (data.status) {
+                    document.getElementById("signinError").innerText = '';
+                    // Simpan data login di localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+
+                    signinPage.classList.remove("active");
+                    feedPage.classList.add("active");
+                    loadPosts();  // Load posts when signed in
+                } else {
+                    document.getElementById("signinError").innerText = "Login gagal. Periksa email atau password.";
+                }
+            } catch (error) {
+                document.getElementById("signinError").innerText = "Terjadi kesalahan.";
+                console.error(error);
+            }
+        }
+
+        // Signup Function
+        async function signup() {
+            const nama = document.getElementById('nameSignup').value;
+            const email = document.getElementById('emailSignup').value;
+            const sandi = document.getElementById('passwordSignup').value;
+
+            if (!nama || !email || !sandi) {
+                document.getElementById("signupError").innerText = "Semua kolom harus diisi!";
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:2024/api/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nama, email, sandi })
+                });
+                const data = await response.json();
+                if (data.status) {
+                    document.getElementById("signupError").innerText = '';
+                    signupPage.classList.remove("active");
+                    feedPage.classList.add("active");
+                    loadPosts();
+                } else {
+                    document.getElementById("signupError").innerText = "Pendaftaran gagal.";
+                }
+            } catch (error) {
+                document.getElementById("signupError").innerText = "Terjadi kesalahan.";
+                console.error(error);
+            }
+        }
+
+        // Load Posts Function - tetap tidak diubah
+        async function loadPosts() {
+            loadingSpinner.style.display = "block";
+            const response = await fetch('http://localhost:2024/api/read', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            const posts = data.data;
+            loadingSpinner.style.display = "none";
+
+            const postContainer = document.getElementById('postContainer');
+            postContainer.innerHTML = '';
+
+            Object.values(posts).forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post-item');
+                postElement.innerHTML = `
+                    <img src="${post.profil}" alt="${post.email}">
+                    <h3>${post.nama}</h3>
+                    <div class="content">
+                        <p>${JSON.stringify(post.konten)}</p>
+                    </div>
+                `;
+                postContainer.appendChild(postElement);
+            });
+        }
+
+        // Create New Post
+        async function createPost() {
+            const newPostTitle = document.getElementById('newPostTitle').value;
+            const newPostContent = document.getElementById('newPostContent').value;
+
+            if (!newPostContent || !newPostTitle) {
+                alert("Please write something in your post.");
+                return;
+            }
+
+            const dataPost = {
+                "nama": "Riky Ripaldo",
+                "email": "kiri@gmail.com",
+                "profil": "https://avatars.githubusercontent.com/u/64513539?v=4",
+                "verify": true,
+                "kunci": "11",
+                "konten": {
+                    "judul": newPostTitle,
+                    "isi": newPostContent,
+                    "media": "https://avatars.githubusercontent.com/u/64513539?v=4",
+                    "key": null
+                }
+            };
+
+            const serve = await fetch('http://localhost:2024/api/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    email: email,
-                    sandi: sandi
-                })
-            })
-            const res = await login.json()
-            infsignin.innerHTML = JSON.stringify(res)
-        }
-
-        const post = document.getElementById("post")
-        async function readPost() {
-            const response = await fetch("http://localhost:2024/api/read", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const res = await response.json()
-            for (let i=0; i<res.data?.rikyxdz?.nama.length;i++) {
-                post.innerHTML = `
-                  <p>${res.data?.rikyxdz?.nama}</p>
-                  <p>${res?.data?.rikyxdz?.konten?.judul}\n${res?.data?.rikyxdz?.konten?.isi}\n${res?.data?.rikyxdz?.konten?.tanggal}</p>
-                `
+                body: JSON.stringify(dataPost)
+            });
+            const data = await serve.json();
+            if (data.status) {
+                alert("Post created successfully!");
+                loadPosts();
+            } else {
+                alert("Failed to create post.");
             }
         }
-        readPost()
     </script>
 </body>
+
 </html>
