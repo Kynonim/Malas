@@ -54,7 +54,7 @@ KETENTUAN:
 
 DISCLAIMER: Lisensi ini dibuat jam 3 pagi dan tidak ada jaminan kewarasan.
 
-## 🌈 Fitur Yang Akan Datang
+## 👌 Fitur Yang Akan Datang
 - Auto-debug (masih dalam mimpi)
 - AI yang beneran intelligent (tidak seperti developernya)
 - Time machine untuk undo kesalahan hidup
@@ -66,8 +66,7 @@ DISCLAIMER: Lisensi ini dibuat jam 3 pagi dan tidak ada jaminan kewarasan.
 - Error yang sudah seperti teman sendiri
 - Dokumentasi AI yang lebih dipercaya dari dokumentasi resmi
 
----
-PS: Kalau ada yang nanya, bilang aja "It works on my machine" 🤷‍♂️
+> PS: Kalau ada yang nanya, bilang aja "It works on my machine" 🤷‍♂️
 
 ---
 Made with ❤️ (dan banyak 😭) oleh orang yang masih belajar
