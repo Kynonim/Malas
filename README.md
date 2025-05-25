@@ -3,7 +3,7 @@
 > "Selamat datang di proyek yang sangat serius ini. Silahkan duduk yang nyaman dan nikmati kopi virtual Anda." 
 
 ## 🤔 Apa ini?
-Ini adalah proyek yang dibuat dengan 99% keringat, 1% kopi, dan 0% logika. Jangan tanya kenapa persentasenya tidak masuk akal, matematika is overrated anyway.
+Ini adalah proyek yang dibuat dengan 98% keringat, 1.8% kopi, dan 0.2% logika. Jangan tanya kenapa persentasenya tidak masuk akal, matematika is overrated anyway.
 
 ## 👨‍💻 Author
 - DeepSeek - *AI Assistant*
@@ -53,6 +53,21 @@ KETENTUAN:
    - Coding sambil overthinking
 
 DISCLAIMER: Lisensi ini dibuat jam 3 pagi dan tidak ada jaminan kewarasan.
+
+## 🌈 Fitur Yang Akan Datang
+- Auto-debug (masih dalam mimpi)
+- AI yang beneran intelligent (tidak seperti developernya)
+- Time machine untuk undo kesalahan hidup
+- Coffee maker integration (urgent)
+
+## 🎪 Hall of Fame
+- Laptop yang belum diupgrade dari 2010
+- Kopi sachet yang selalu menemani
+- Error yang sudah seperti teman sendiri
+- Dokumentasi AI yang lebih dipercaya dari dokumentasi resmi
+
+---
+PS: Kalau ada yang nanya, bilang aja "It works on my machine" 🤷‍♂️
 
 ---
 Made with ❤️ (dan banyak 😭) oleh orang yang masih belajar
