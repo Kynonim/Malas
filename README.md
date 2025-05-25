@@ -8,7 +8,7 @@ Ini adalah proyek yang dibuat dengan 99% keringat, 1% kopi, dan 0% logika. Janga
 ## 👨‍💻 Author
 - DeepSeek - *AI Assistant*
 - ChatGPT - *AI Assistant*
-- Riky Ripaldo - *Recode*
+- ~*Riky Ripaldo*~ - *Recode*
 
 ## 🚀 Fitur Canggih
 - Berjalan di semua browser (kecuali IE, karena kita masih punya harga diri)
@@ -33,10 +33,26 @@ Proyek ini mungkin mengandung:
 - Kode yang ditulis jam 3 pagi
 - Variabel yang dinamai asal-asalan
 - Comment yang lebih panjang dari kodenya
-- AI copy-paste heritage
+- AI copy-paste tentunya
 
 ## 📝 License
-MIT License (karena semua orang pakai ini dan kita cuma ikut-ikutan)
+MIT (Maksudnya Ini Terserah) License
+
+Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan proyek ini untuk:
+- Menggunakan untuk apa saja (termasuk buat status WA)
+- Memodifikasi sesuka hati (asal jangan dirusak)
+- Mendistribusikan ke siapa saja (kecuali mantan)
+
+KETENTUAN:
+1. Jika kode error, bukan salah kami
+2. Jika kode berhasil, itu berkat kami
+3. Dilarang menggunakan untuk tugas kuliah (nanti ketahuan dosen)
+4. Garansi hangus jika:
+   - Dijalankan saat Mercury retrograde
+   - Digunakan sambil makan indomie
+   - Coding sambil overthinking
+
+DISCLAIMER: Lisensi ini dibuat jam 3 pagi dan tidak ada jaminan kewarasan.
 
 ---
-Made with ❤️ (dan banyak 😭) oleh developer yang masih belajar
+Made with ❤️ (dan banyak 😭) oleh orang yang masih belajar
